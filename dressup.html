@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Pichu Dress-Up — Centered & Bigger</title>
+<style>
+
+  :root{
+    --panel:#8797db;            /* panel color */
+    --stage:#d9d0ff;            /* stage color */
+    --btn:#f7b7b6;              /* button color */
+
+    --panel-w: 640px;           /* panel width */
+    --stage-h: 350px;           /* stage height (taller to give space) */
+
+    --sprite: 320px;            /* <<< SPRITE SIZE (base + all overlays) */
+    --dx: 0px;                  /* global nudge X for overlays */
+    --dy: 0px;                  /* global nudge Y for overlays */
+  }
+
+  
+
+
+  *{ box-sizing: border-box; }
+  html, body{ height:100%; }
+  body{
+    margin:0;
+    font-family: Arial, sans-serif;
+    background: url("bg.png") center/cover no-repeat;
+    display: grid;
+    place-items: center;          /* center the panel on the page */
+  }
+
+  .panel{
+    width: min(var(--panel-w), 92vw);
+    background: var(--panel);
+    border-radius: 20px;
+    padding: 18px;
+    box-shadow: 0 14px 28px rgba(0,0,0,.18);
+  }
+
+  .stage{
+    height: min(var(--stage-h), 70vh);
+    background: var(--stage);
+    border-radius: 12px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+
+
+    display: grid;
+    place-items: center;
+  }
+
+
+  input[type=radio]{ position:absolute; opacity:0; pointer-events:none; }
+
+
+  .sprite{
+    position: relative;
+    width: var(--sprite);
+    height: var(--sprite);
+  }
+
+  .base, .layer{
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;   /* keep crisp pixels when scaled */
+  }
+  .layer{
+    display: none;
+    transform: translate(var(--dx), var(--dy)); /* tiny global nudge if needed */
+  }
+
+  /* Stacking order (change if you like) */
+  .clo{ z-index: 20; }   /* clothes middle */
+  .acc{ z-index: 30; }   /* accessories on top of clothes */
+  .hat{ z-index: 40; }   /* hats on very top */
+
+  /* ===== Show one from EACH category (independent of tabs) ===== */
+  /* Accessories (0=None shows nothing) */
+  #acc-1:checked ~ .sprite .a1,
+  #acc-2:checked ~ .sprite .a2,
+  #acc-3:checked ~ .sprite .a3 { display:block; }
+
+  /* Clothes (transparent garment overlays; if your clothes are full-body,
+     switch to the “replacement” rule in the comment below) */
+  #clo-1:checked ~ .sprite .c1,
+  #clo-2:checked ~ .sprite .c2,
+  #clo-3:checked ~ .sprite .c3 { display:block; }
+
+  /* Hats */
+  #hat-1:checked ~ .sprite .h1,
+  #hat-2:checked ~ .sprite .h2,
+  #hat-3:checked ~ .sprite .h3 { display:block; }
+
+  /* If your CLOTHES images include the entire character, UNCOMMENT this to hide base:
+  #clo-1:checked ~ .sprite .base,
+  #clo-2:checked ~ .sprite .base,
+  #clo-3:checked ~ .sprite .base { display:none; }
+  */
+
+  /* ===== Arrows (only the active tab’s pair shows) ===== */
+  .arrow{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px; height: 44px; line-height: 44px; text-align: center;
+    border-radius: 50%; background: var(--btn);
+    cursor: pointer; user-select: none;
+    box-shadow: 0 8px 16px rgba(0,0,0,.25);
+    font-weight: bold;
+    display: none;
+  }
+  .arrow.l{ left: 16px; }
+  .arrow.r{ right: 16px; }
+
+  /* Accessories arrow pairs */
+  #cat-acc:checked ~ .stage #acc-0:checked ~ .acc-pair.acc0 .arrow,
+  #cat-acc:checked ~ .stage #acc-1:checked ~ .acc-pair.acc1 .arrow,
+  #cat-acc:checked ~ .stage #acc-2:checked ~ .acc-pair.acc2 .arrow,
+  #cat-acc:checked ~ .stage #acc-3:checked ~ .acc-pair.acc3 .arrow { display:block; }
+
+  /* Clothes arrow pairs */
+  #cat-clo:checked ~ .stage #clo-0:checked ~ .clo-pair.clo0 .arrow,
+  #cat-clo:checked ~ .stage #clo-1:checked ~ .clo-pair.clo1 .arrow,
+  #cat-clo:checked ~ .stage #clo-2:checked ~ .clo-pair.clo2 .arrow,
+  #cat-clo:checked ~ .stage #clo-3:checked ~ .clo-pair.clo3 .arrow { display:block; }
+
+  /* Hats arrow pairs */
+  #cat-hat:checked ~ .stage #hat-0:checked ~ .hat-pair.hat0 .arrow,
+  #cat-hat:checked ~ .stage #hat-1:checked ~ .hat-pair.hat1 .arrow,
+  #cat-hat:checked ~ .stage #hat-2:checked ~ .hat-pair.hat2 .arrow,
+  #cat-hat:checked ~ .stage #hat-3:checked ~ .hat-pair.hat3 .arrow { display:block; }
+
+  /* ===== Tabs ===== */
+  .tabs{ display:flex; gap:28px; justify-content:center }
+  .tab{
+    width:100px; height:100px; border-radius:50%;
+    background:var(--btn); display:grid; place-items:center;
+    cursor:pointer; box-shadow: inset 0 -6px 0 rgba(0,0,0,.06);
+  }
+  #cat-acc:checked ~ .tabs .t-acc,
+  #cat-clo:checked ~ .tabs .t-clo,
+  #cat-hat:checked ~ .tabs .t-hat{ outline:5px solid #fff }
+</style>
+
+</head>
+<body>
+  <nav class="site-nav center">
+    <a href="index.html">Home</a>
+    <a href="dressup.html" aria-current="page"> Dress Up</a>
+    <a href="snack.html"> Snack Time</a>
+    <a href="about.html">About</a>
+  </nav>
+
+
+
+<section class="panel">
+  <!-- Which category’s arrows are visible -->
+  <input type="radio" name="cat" id="cat-acc" checked>
+  <input type="radio" name="cat" id="cat-clo">
+  <input type="radio" name="cat" id="cat-hat">
+
+  <div class="stage">
+    <!-- Selections MUST be first inside .stage -->
+    <!-- Accessories (0=None) -->
+    <input type="radio" name="acc" id="acc-0" checked>
+    <input type="radio" name="acc" id="acc-1">
+    <input type="radio" name="acc" id="acc-2">
+    <input type="radio" name="acc" id="acc-3">
+    <!-- Clothes (0=None) -->
+    <input type="radio" name="clo" id="clo-0" checked>
+    <input type="radio" name="clo" id="clo-1">
+    <input type="radio" name="clo" id="clo-2">
+    <input type="radio" name="clo" id="clo-3">
+    <!-- Hats (0=None) -->
+    <input type="radio" name="hat" id="hat-0" checked>
+    <input type="radio" name="hat" id="hat-1">
+    <input type="radio" name="hat" id="hat-2">
+    <input type="radio" name="hat" id="hat-3">
+
+    <!-- Centered sprite canvas (controls size & centering) -->
+    <div class="sprite">
+      <img class="base" src="pichu.png" alt="Pichu">
+
+      <!-- Overlays (transparent PNGs sized to the same canvas as base) -->
+      <!-- Accessories -->
+      <img class="layer acc a1" src="acc-1.png" alt="">
+      <img class="layer acc a2" src="acc-2.png" alt="">
+      <img class="layer acc a3" src="acc-3.png" alt="">
+      <!-- Clothes -->
+      <img class="layer clo c1" src="clo-1.png" alt="">
+      <img class="layer clo c2" src="clo-2.png" alt="">
+      <img class="layer clo c3" src="clo-3.png" alt="">
+      <!-- Hats -->
+      <img class="layer hat h1" src="hat-1.png" alt="">
+      <img class="layer hat h2" src="hat-2.png" alt="">
+      <img class="layer hat h3" src="hat-3.png" alt="">
+    </div>
+
+    <!-- ACCESSORY arrows (wrap-around) -->
+    <div class="acc-pair acc0"><label class="arrow l" for="acc-3">◀</label><label class="arrow r" for="acc-1">▶</label></div>
+    <div class="acc-pair acc1"><label class="arrow l" for="acc-0">◀</label><label class="arrow r" for="acc-2">▶</label></div>
+    <div class="acc-pair acc2"><label class="arrow l" for="acc-1">◀</label><label class="arrow r" for="acc-3">▶</label></div>
+    <div class="acc-pair acc3"><label class="arrow l" for="acc-2">◀</label><label class="arrow r" for="acc-0">▶</label></div>
+
+    <!-- CLOTHES arrows -->
+    <div class="clo-pair clo0"><label class="arrow l" for="clo-3">◀</label><label class="arrow r" for="clo-1">▶</label></div>
+    <div class="clo-pair clo1"><label class="arrow l" for="clo-0">◀</label><label class="arrow r" for="clo-2">▶</label></div>
+    <div class="clo-pair clo2"><label class="arrow l" for="clo-1">◀</label><label class="arrow r" for="clo-3">▶</label></div>
+    <div class="clo-pair clo3"><label class="arrow l" for="clo-2">◀</label><label class="arrow r" for="clo-0">▶</label></div>
+
+    <!-- HAT arrows -->
+    <div class="hat-pair hat0"><label class="arrow l" for="hat-3">◀</label><label class="arrow r" for="hat-1">▶</label></div>
+    <div class="hat-pair hat1"><label class="arrow l" for="hat-0">◀</label><label class="arrow r" for="hat-2">▶</label></div>
+    <div class="hat-pair hat2"><label class="arrow l" for="hat-1">◀</label><label class="arrow r" for="hat-3">▶</label></div>
+    <div class="hat-pair hat3"><label class="arrow l" for="hat-2">◀</label><label class="arrow r" for="hat-0">▶</label></div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <label class="tab t-acc" for="cat-acc">Accessories</label>
+    <label class="tab t-clo" for="cat-clo">Clothes</label>
+    <label class="tab t-hat" for="cat-hat">Hats</label>
+  </div>
+</section>
+
+
+
+</body>
+</html>

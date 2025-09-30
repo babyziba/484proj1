@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Pichu — Snack Time</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+
+    :root{
+      --sprite: 320px;   /* match dressup */
+      --dx:    0px;      /* treat overlays nudge */
+      --dy:    0px;
+      --h-dx:  -40px;      /* happy.png nudge */
+      --h-dy:  -30px;
+    }
+
+  
+    #treat-1:checked ~ .stage .t1,
+    #treat-2:checked ~ .stage .t2,
+    #treat-3:checked ~ .stage .t3 { display:block }
+
+
+    #treat-0:checked ~ .stage .tp.t0 .arrow,
+    #treat-1:checked ~ .stage .tp.t1 .arrow,
+    #treat-2:checked ~ .stage .tp.t2 .arrow,
+    #treat-3:checked ~ .stage .tp.t3 .arrow { display:block }
+
+
+    .sprite .happy{ display:none; transform:translate(var(--h-dx), var(--h-dy)); }
+    .layer.treat{ transform:translate(var(--dx), var(--dy)); }
+
+    /* Happy mode */
+    #f-20:checked ~ .stage .base { display:none }
+    #f-20:checked ~ .stage .happy{ display:block }
+
+    /* Fullness meter swap */
+    .meter-wrap meter{ display:none }
+    #f-6:checked  ~ .meter-wrap .m6,
+    #f-7:checked  ~ .meter-wrap .m7,
+    #f-8:checked  ~ .meter-wrap .m8,
+    #f-9:checked  ~ .meter-wrap .m9,
+    #f-10:checked ~ .meter-wrap .m10,
+    #f-11:checked ~ .meter-wrap .m11,
+    #f-12:checked ~ .meter-wrap .m12,
+    #f-13:checked ~ .meter-wrap .m13,
+    #f-14:checked ~ .meter-wrap .m14,
+    #f-15:checked ~ .meter-wrap .m15,
+    #f-16:checked ~ .meter-wrap .m16,
+    #f-17:checked ~ .meter-wrap .m17,
+    #f-18:checked ~ .meter-wrap .m18,
+    #f-19:checked ~ .meter-wrap .m19,
+    #f-20:checked ~ .meter-wrap .m20 { display:inline-block }
+
+    /* Bottom tab highlight */
+    #cat-treat:checked ~ .tabs .t-treat{ outline:5px solid #fff }
+
+
+    .tabs{ position:relative }
+    .cycle-overlay{
+      position:absolute; inset:0; display:flex; justify-content:center; align-items:center;
+      pointer-events:none;
+    }
+    .cycle-overlay .cy{ display:none; pointer-events:auto } 
+
+    /* Treat 1: +5% */
+    #treat-1:checked ~ #f-6:checked  ~ .tabs .cy.t1.f6  { display:grid }
+    #treat-1:checked ~ #f-7:checked  ~ .tabs .cy.t1.f7  { display:grid }
+    #treat-1:checked ~ #f-8:checked  ~ .tabs .cy.t1.f8  { display:grid }
+    #treat-1:checked ~ #f-9:checked  ~ .tabs .cy.t1.f9  { display:grid }
+    #treat-1:checked ~ #f-10:checked ~ .tabs .cy.t1.f10 { display:grid }
+    #treat-1:checked ~ #f-11:checked ~ .tabs .cy.t1.f11 { display:grid }
+    #treat-1:checked ~ #f-12:checked ~ .tabs .cy.t1.f12 { display:grid }
+    #treat-1:checked ~ #f-13:checked ~ .tabs .cy.t1.f13 { display:grid }
+    #treat-1:checked ~ #f-14:checked ~ .tabs .cy.t1.f14 { display:grid }
+    #treat-1:checked ~ #f-15:checked ~ .tabs .cy.t1.f15 { display:grid }
+    #treat-1:checked ~ #f-16:checked ~ .tabs .cy.t1.f16 { display:grid }
+    #treat-1:checked ~ #f-17:checked ~ .tabs .cy.t1.f17 { display:grid }
+    #treat-1:checked ~ #f-18:checked ~ .tabs .cy.t1.f18 { display:grid }
+    #treat-1:checked ~ #f-19:checked ~ .tabs .cy.t1.f19 { display:grid }
+
+    /* Treat 2: +10% */
+    #treat-2:checked ~ #f-6:checked  ~ .tabs .cy.t2.f6  { display:grid }
+    #treat-2:checked ~ #f-7:checked  ~ .tabs .cy.t2.f7  { display:grid }
+    #treat-2:checked ~ #f-8:checked  ~ .tabs .cy.t2.f8  { display:grid }
+    #treat-2:checked ~ #f-9:checked  ~ .tabs .cy.t2.f9  { display:grid }
+    #treat-2:checked ~ #f-10:checked ~ .tabs .cy.t2.f10 { display:grid }
+    #treat-2:checked ~ #f-11:checked ~ .tabs .cy.t2.f11 { display:grid }
+    #treat-2:checked ~ #f-12:checked ~ .tabs .cy.t2.f12 { display:grid }
+    #treat-2:checked ~ #f-13:checked ~ .tabs .cy.t2.f13 { display:grid }
+    #treat-2:checked ~ #f-14:checked ~ .tabs .cy.t2.f14 { display:grid }
+    #treat-2:checked ~ #f-15:checked ~ .tabs .cy.t2.f15 { display:grid }
+    #treat-2:checked ~ #f-16:checked ~ .tabs .cy.t2.f16 { display:grid }
+    #treat-2:checked ~ #f-17:checked ~ .tabs .cy.t2.f17 { display:grid }
+    #treat-2:checked ~ #f-18:checked ~ .tabs .cy.t2.f18 { display:grid }
+    #treat-2:checked ~ #f-19:checked ~ .tabs .cy.t2.f19 { display:grid }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav center">
+    <a href="index.html">Home</a>
+    <a href="dressup.html">Dress Up</a>
+    <a href="snack.html" aria-current="page">Snack Time</a>
+    <a href="about.html">About</a>
+  </nav>
+
+
+  <form class="snack-form">
+    <section class="panel">
+      <input type="radio" name="cat" id="cat-treat" checked>
+
+      <!-- Treat radios (state) -->
+      <input type="radio" name="treat" id="treat-0" checked>
+      <input type="radio" name="treat" id="treat-1">
+      <input type="radio" name="treat" id="treat-2">
+      <input type="radio" name="treat" id="treat-3">
+
+      <!-- Fullness radios (30..100 by 5s) -->
+      <input type="radio" name="full" id="f-6"  checked>
+      <input type="radio" name="full" id="f-7">
+      <input type="radio" name="full" id="f-8">
+      <input type="radio" name="full" id="f-9">
+      <input type="radio" name="full" id="f-10">
+      <input type="radio" name="full" id="f-11">
+      <input type="radio" name="full" id="f-12">
+      <input type="radio" name="full" id="f-13">
+      <input type="radio" name="full" id="f-14">
+      <input type="radio" name="full" id="f-15">
+      <input type="radio" name="full" id="f-16">
+      <input type="radio" name="full" id="f-17">
+      <input type="radio" name="full" id="f-18">
+      <input type="radio" name="full" id="f-19">
+      <input type="radio" name="full" id="f-20">
+
+      <div class="stage">
+
+        <div class="sprite">
+          <img class="base"  src="pichu.png"  alt="Pichu">
+          <img class="happy" src="happy.png"  alt="Happy Pichu">
+
+          <img class="layer treat t1" src="treat-1.png" alt="">
+          <img class="layer treat t2" src="treat-2.png" alt="">
+          <img class="layer treat t3" src="treat-3.png" alt="">
+        </div>
+
+
+        <div class="tp t0"><label class="arrow l" for="treat-3">◀</label><label class="arrow r" for="treat-1">▶</label></div>
+        <div class="tp t1"><label class="arrow l" for="treat-0">◀</label><label class="arrow r" for="treat-2">▶</label></div>
+        <div class="tp t2"><label class="arrow l" for="treat-1">◀</label><label class="arrow r" for="treat-3">▶</label></div>
+        <div class="tp t3"><label class="arrow l" for="treat-2">◀</label><label class="arrow r" for="treat-0">▶</label></div>
+      </div>
+
+      <!-- Fullness meters -->
+      <div class="meter-wrap center small" style="margin-top:10px">
+        <meter class="m m6"  min="0" max="100" value="30" style="width:280px"></meter>
+        <meter class="m m7"  min="0" max="100" value="35" style="width:280px"></meter>
+        <meter class="m m8"  min="0" max="100" value="40" style="width:280px"></meter>
+        <meter class="m m9"  min="0" max="100" value="45" style="width:280px"></meter>
+        <meter class="m m10" min="0" max="100" value="50" style="width:280px"></meter>
+        <meter class="m m11" min="0" max="100" value="55" style="width:280px"></meter>
+        <meter class="m m12" min="0" max="100" value="60" style="width:280px"></meter>
+        <meter class="m m13" min="0" max="100" value="65" style="width:280px"></meter>
+        <meter class="m m14" min="0" max="100" value="70" style="width:280px"></meter>
+        <meter class="m m15" min="0" max="100" value="75" style="width:280px"></meter>
+        <meter class="m m16" min="0" max="100" value="80" style="width:280px"></meter>
+        <meter class="m m17" min="0" max="100" value="85" style="width:280px"></meter>
+        <meter class="m m18" min="0" max="100" value="90" style="width:280px"></meter>
+        <meter class="m m19" min="0" max="100" value="95" style="width:280px"></meter>
+        <meter class="m m20" min="0" max="100" value="100" style="width:280px"></meter>
+      </div>
+
+      <!-- Bottom tab & overlay "Treats" button that increments fullness -->
+      <div class="tabs" style="margin-top:12px">
+        <label class="tab t-treat" for="cat-treat">Treats</label>
+        <div class="cycle-overlay">
+          <!-- Treat 1: +5% -->
+          <label class="tab cy t1 f6"  for="f-7">Treats</label>
+          <label class="tab cy t1 f7"  for="f-8">Treats</label>
+          <label class="tab cy t1 f8"  for="f-9">Treats</label>
+          <label class="tab cy t1 f9"  for="f-10">Treats</label>
+          <label class="tab cy t1 f10" for="f-11">Treats</label>
+          <label class="tab cy t1 f11" for="f-12">Treats</label>
+          <label class="tab cy t1 f12" for="f-13">Treats</label>
+          <label class="tab cy t1 f13" for="f-14">Treats</label>
+          <label class="tab cy t1 f14" for="f-15">Treats</label>
+          <label class="tab cy t1 f15" for="f-16">Treats</label>
+          <label class="tab cy t1 f16" for="f-17">Treats</label>
+          <label class="tab cy t1 f17" for="f-18">Treats</label>
+          <label class="tab cy t1 f18" for="f-19">Treats</label>
+          <label class="tab cy t1 f19" for="f-20">Treats</label>
+          <!-- Treat 2: +10% -->
+          <label class="tab cy t2 f6"  for="f-8">Treats</label>
+          <label class="tab cy t2 f7"  for="f-9">Treats</label>
+          <label class="tab cy t2 f8"  for="f-10">Treats</label>
+          <label class="tab cy t2 f9"  for="f-11">Treats</label>
+          <label class="tab cy t2 f10" for="f-12">Treats</label>
+          <label class="tab cy t2 f11" for="f-13">Treats</label>
+          <label class="tab cy t2 f12" for="f-14">Treats</label>
+          <label class="tab cy t2 f13" for="f-15">Treats</label>
+          <label class="tab cy t2 f14" for="f-16">Treats</label>
+          <label class="tab cy t2 f15" for="f-17">Treats</label>
+          <label class="tab cy t2 f16" for="f-18">Treats</label>
+          <label class="tab cy t2 f17" for="f-19">Treats</label>
+          <label class="tab cy t2 f18" for="f-20">Treats</label>
+          <label class="tab cy t2 f19" for="f-20">Treats</label>
+        </div>
+      </div>
+
+      <!-- Reset  -->
+      <p class="center small" style="margin:10px 0 0">
+        <button type="reset" class="tab" style="width:120px;height:48px;border-radius:999px">Reset</button>
+      </p>
+    </section>
+  </form>
+</body>
+</html>
